@@ -74,7 +74,11 @@
                         <div class="header-topbar-col topbar-info">
                             <ul>
                                 <li><i class="fa-solid fa-phone"></i> <a href="tel:+254733572239">+254 733 572239</a></li>
-                                <li class="time-badge"><i class="fa-solid fa-clock"></i> Weekdays: 8:00 AM - 7:30 PM<br>Weekends & Holidays: 9:00 AM - 8:30 PM</li>
+                                <li class="time-badge" id="opening-status" data-check-hours="4">
+                                    <i class="fa-solid fa-clock"></i>
+                                    <span class="status-text">Checking hours…</span><br>
+                                    <small class="next-text"></small>
+                                </li>
                                 <li><a href="https://wa.me/254733572239">Book on WhatsApp</a></li>
                             </ul>
                         </div>
@@ -450,8 +454,84 @@
         </div>  
     </section> -->
 
-    <!-- jQuery -->
-    <script src="js/jquery.min.js"></script>
+        <script>
+        (function(){
+            const el = document.getElementById('opening-status');
+            if(!el) return;
+            const checkHours = parseFloat(el.dataset.checkHours) || 4;
+            function nowNairobi(){
+                const now = new Date();
+                return new Date(now.getTime() + 3*60*60*1000);
+            }
+            function pad(n){return n<10?'0'+n:n;}
+            function getStatus(){
+                const n = nowNairobi();
+                const day = n.getUTCDay();
+                const h = n.getUTCHours();
+                const m = n.getUTCMinutes();
+                const weekdayOpen = {open: 8*60, close: 19*60 + 30};
+                const weekendOpen = {open: 9*60, close: 20*60 + 30};
+                const isWeekend = (day===0||day===6);
+                const minutes = h*60 + m;
+                const openRange = isWeekend ? weekendOpen : weekdayOpen;
+                const openNow = minutes >= openRange.open && minutes < openRange.close;
+                return {openNow,minutes,openRange,day,n};
+            }
+            function nextOpeningInfo(){
+                const s = getStatus();
+                if(s.openNow) return null;
+                let base = s.n;
+                for(let add=0; add<8; add++){
+                    const test = new Date(base.getTime() + add*24*60*60*1000);
+                    const day = test.getUTCDay();
+                    const isWeekend = (day===0||day===6);
+                    const openMins = (isWeekend ? 9*60 : 8*60);
+                    const openLocal = new Date(test);
+                    openLocal.setUTCHours(Math.floor(openMins/60), openMins%60,0,0);
+                    if(openLocal.getTime() > s.n.getTime()){
+                        return {opensAt: openLocal};
+                    }
+                }
+                return null;
+            }
+            function humanDiff(ms){
+                const mins = Math.round(ms/60000);
+                const h = Math.floor(mins/60);
+                const m = mins%60;
+                if(h>0) return h+'h '+m+'m';
+                return m+'m';
+            }
+            function render(){
+                const s = getStatus();
+                const statusText = el.querySelector('.status-text');
+                const nextText = el.querySelector('.next-text');
+                if(s.openNow){
+                    statusText.textContent = 'Open • Closes at ' + (function(){ const c = s.openRange.close; return Math.floor(c/60)+':'+pad(c%60); })();
+                    if(nextText) nextText.textContent = '';
+                    el.classList.add('open');
+                    el.classList.remove('closed');
+                } else {
+                    statusText.textContent = 'Closed';
+                    const next = nextOpeningInfo();
+                    if(next){
+                        const diffMs = next.opensAt.getTime() - s.n.getTime();
+                        const hours = diffMs/3600000;
+                        nextText.textContent = 'Opens in ' + humanDiff(diffMs) + ' (at ' + (function(){ const d=next.opensAt; return d.getUTCHours()+':'+pad(d.getUTCMinutes()); })() + ' Nairobi)';
+                        if(hours <= checkHours) el.classList.add('opening-soon'); else el.classList.remove('opening-soon');
+                    } else {
+                        nextText.textContent = 'Opening schedule unavailable';
+                    }
+                    el.classList.add('closed');
+                    el.classList.remove('open');
+                }
+            }
+            render();
+            setInterval(render, 60*1000);
+        })();
+        </script>
+
+        <!-- jQuery -->
+        <script src="js/jquery.min.js"></script>
 
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
