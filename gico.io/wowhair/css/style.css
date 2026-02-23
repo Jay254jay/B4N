@@ -399,6 +399,19 @@ a {
   padding: 10px 20px;
 }
 
+/* Timing badge: match WhatsApp button background and padding */
+.topbar-info ul li.time-badge {
+  background-color: #D6A354;
+  color: #ffffff;
+  padding: 10px 20px;
+  border-radius: 4px;
+  display: inline-block;
+}
+.topbar-info ul li.time-badge i {
+  color: #ffffff;
+  margin-right: 8px;
+}
+
 
 /* Header Two CSS */
 .header-two-area {
