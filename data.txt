@@ -37,4 +37,5 @@ Technical Constraints: Must be fully accessible (the shop itself is wheelchair a
 5. Logistics & Support
 Domain & Hosting: Assistance needed to secure barber4all.co.ke.
 Maintenance: Quarterly updates to service pricing and holiday hours.
+Working Hours: Weekdays 8-7.30; Weekends & Holidays 9-8.30.
 Budget Range: KES 80,000 – KES 120,000.
