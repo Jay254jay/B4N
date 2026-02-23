@@ -1,0 +1,40 @@
+Website Requirements Document: Barber 4 All
+Client: Barber 4 All (Rhapta Road Branch)
+Date: February 20, 2026
+1. Project Overview & Contacts
+Project Name: Barber 4 All Digital Hub
+Primary Contact: Management Team – info@barber4all.co.ke – +254 733 572239.
+Decision Makers: Store Manager and Lead Barber (Jay).
+Target Launch Date: Within 6 weeks to coincide with a new seasonal "Grooming for All" campaign.
+2. Business & Brand Identity
+Elevator Pitch: A team of passionate professionals in the heart of Westlands, dedicated to serving all clients—regardless of hair type or background—with high-end precision and total equality.
+Target Audience:
+Local Residents: Professionals living along Rhapta Road and Riverside.
+Diverse Needs: Clients seeking specialized fades, beard sculpting, or relaxing scalp massages.
+Families: Parents looking for a "good for kids" environment.
+Unique Selling Proposition (USP): Professional-grade grooming at a competitive price point, known for patient, high-detail work like 3D designs or complex photoshoot prep.
+Existing Assets: Logo available; identifies as a women-owned business.
+Competitors: Barber Kings Kenya (Westlands) and Pau Barbershop. 
+3. Site Structure & Content
+Type of Site: Professional business site to replace existing social-only presence.
+Must-Have Pages:
+Home: Featuring the "Equality in Service" mission statement.
+Our Barbers: Highlights for key staff like Jay (highly rated for patience and precision).
+Service Menu: Clear sections for Haircuts, Beard Trims, Washes, and relaxing Massages.
+Location/Contact: Emphasizing the "scenic heart of Rhapta Rd" and free parking.
+SEO Keywords: "Barber 4 All Nairobi," "Best barber Rhapta Road," "Affordable luxury grooming Westlands," "Kids barber Nairobi." 
+it is not women owned.
+
+4. Functional Requirements
+Core Features:
+WhatsApp Integration: Direct link to wa.me/254733572239 for instant bookings.
+Dynamic Price List: Easy-to-update table for services (Haircuts, Washes, Massages).
+Review Carousel: Displaying 4.7-star ratings to build trust.
+Integrations:
+Google Maps: To show the exact spot at 12 Rhapta Road.
+Payment Info: Clearly state Cash-only or M-Pesa status to set client expectations.
+Technical Constraints: Must be fully accessible (the shop itself is wheelchair accessible) and highly responsive for mobile users.
+5. Logistics & Support
+Domain & Hosting: Assistance needed to secure barber4all.co.ke.
+Maintenance: Quarterly updates to service pricing and holiday hours.
+Budget Range: KES 80,000 – KES 120,000.
