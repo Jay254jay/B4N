@@ -1,7 +1,23 @@
 function initMap() {
-var mapProp= {
-  center:new google.maps.LatLng(1.2659,36.7873),
-  zoom:16,
-};
-var map = new google.maps.Map(document.getElementById("map"),mapProp);
+  // Centered on Rhapta Road, Westlands (Nairobi) and add a marker
+  var centerLatLng = new google.maps.LatLng(-1.2760, 36.8038);
+  var mapProp = {
+    center: centerLatLng,
+    zoom: 16
+  };
+  var map = new google.maps.Map(document.getElementById("map"), mapProp);
+
+  var marker = new google.maps.Marker({
+    position: centerLatLng,
+    map: map,
+    title: 'Barber 4 All - 12 Rhapta Road'
+  });
+
+  var infoWindow = new google.maps.InfoWindow({
+    content: '<strong>Barber 4 All</strong><br>12 Rhapta Road, Westlands, Nairobi'
+  });
+
+  marker.addListener('click', function() {
+    infoWindow.open(map, marker);
+  });
 }
