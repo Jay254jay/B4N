@@ -51,22 +51,19 @@
     <link href="css/responsive.css" rel="stylesheet">
 
     <style>
-    /* Opening status badge colors */
-    .time-badge{padding:6px 8px;border-radius:4px;color:#fff}
+    /* Opening status badge colors (badge-only coloring) */
+    .time-badge{padding:6px 8px;border-radius:8px;color:#fff;display:inline-block}
     .time-badge.open{background:#27ae60}
     .time-badge.closed{background:#c0392b}
-    .time-badge.opening-soon{background:#f1c40f;color:#000}
-    .time-badge.closing-soon{background:#e67e22}
+    /* opening-soon and closing-soon share the same orange warning color */
+    .time-badge.opening-soon, .time-badge.closing-soon { background: #e67e22; color: #fff }
     .time-badge .next-text{font-weight:600}
-    /* Header topbar color states (override previous topbar colors) */
-    .header-topbar.open { background-color: #27ae60 !important; background-image: none !important; color: #fff !important; }
-    .header-topbar.closed { background-color: #c0392b !important; background-image: none !important; color: #fff !important; }
-    .header-topbar.opening-soon { background-color: #f1c40f !important; background-image: none !important; color: #000 !important; }
-    .header-topbar.closing-soon { background-color: #e67e22 !important; background-image: none !important; color: #fff !important; }
+    /* Header topbar defaults: white background. Only color the full topbar when explicitly 'open' */
+    .header-topbar { background-color: #ffffff !important; color: inherit !important; background-image: none !important; }
+    .header-topbar.open { background-color: #27ae60 !important; color: #fff !important; }
     .header-topbar, .header-area .header-topbar { background-repeat: no-repeat !important; }
     .header-topbar .container { background: transparent !important; }
     .header-topbar * { color: inherit !important; }
-    .header-topbar .time-badge{background:transparent;border-radius:0;padding:6px 0}
     </style>
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -110,9 +107,7 @@
                 <div class="row">
                     <div class="col-lg-3 col-md-6 col-sm-6 col-8">
                         <div class="header-logo">
-                            <a href="index-two.html">
-                                <img src="images/logo-black.png" alt="" class="img-fluid">
-                            </a>
+                            <!-- logo removed -->
                         </div>
                     </div>
                     <div class="col-lg-9 col-md-6 col-sm-6 col-4">
@@ -460,6 +455,88 @@
             <p>Copyright © 2026 Barber 4 All</p>
         </div>
     </section>
+
+    <!-- Opening status script: sets badge class and text. Defaults to 09:00-18:00 but will read data-open/data-close on #opening-status if present. */ -->
+    <script>
+    document.addEventListener('DOMContentLoaded', function(){
+        function parseTime(t){
+            // expects HH:MM
+            var parts = (t||'').split(':');
+            if(parts.length<2) return null;
+            return parseInt(parts[0],10)*60 + parseInt(parts[1],10);
+        }
+
+        function minutesNow(){
+            var d = new Date();
+            return d.getHours()*60 + d.getMinutes();
+        }
+
+        var el = document.getElementById('opening-status');
+        if(!el) return;
+
+        // defaults (change here or add data-open/data-close attributes to the element)
+        var defaultOpen = '09:00';
+        var defaultClose = '18:00';
+        var openData = el.getAttribute('data-open');
+        var closeData = el.getAttribute('data-close');
+        var openM = parseTime(openData) || parseTime(defaultOpen);
+        var closeM = parseTime(closeData) || parseTime(defaultClose);
+
+        function niceDiff(mins){
+            var h = Math.floor(mins/60), m = mins%60;
+            if(h>0) return h+'h '+m+'m';
+            return m+'m';
+        }
+
+        function update(){
+            var now = minutesNow();
+            el.classList.remove('open','closed','opening-soon','closing-soon');
+            var statusText = '';
+            var nextText = '';
+
+            if(now >= openM && now < closeM){
+                // currently open
+                var minsToClose = closeM - now;
+                if(minsToClose <= 60){
+                    el.classList.add('closing-soon');
+                    statusText = 'Closing soon';
+                    nextText = 'Closes in '+niceDiff(minsToClose);
+                } else {
+                    el.classList.add('open');
+                    statusText = 'Open';
+                    nextText = 'Closes in '+niceDiff(minsToClose);
+                }
+            } else {
+                // currently closed
+                var minsToOpen = (now < openM) ? (openM - now) : (24*60 - now + openM);
+                if(minsToOpen <= 60){
+                    el.classList.add('opening-soon');
+                    statusText = 'Opening soon';
+                    nextText = 'Opens in '+niceDiff(minsToOpen);
+                } else {
+                    el.classList.add('closed');
+                    statusText = 'Closed';
+                    nextText = 'Opens in '+niceDiff(minsToOpen);
+                }
+            }
+
+            var st = el.querySelector('.status-text');
+            var nt = el.querySelector('.next-text');
+            if(st) st.textContent = statusText;
+            if(nt) nt.textContent = nextText;
+
+            // color full topbar only when fully open
+            var topbar = el.closest('.header-topbar');
+            if(topbar){
+                if(el.classList.contains('open')) topbar.classList.add('open'); else topbar.classList.remove('open');
+            }
+        }
+
+        // initial run and then every 30s
+        update();
+        setInterval(update, 30000);
+    });
+    </script>
 
     <a href="#" id="back-to-top" title="Back to top"><i class="fa-solid fa-up-long"></i></a>
 
