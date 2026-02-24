@@ -50,6 +50,25 @@
     <!-- Responsive CSS -->
     <link href="css/responsive.css" rel="stylesheet">
 
+    <style>
+    /* Opening status badge colors */
+    .time-badge{padding:6px 8px;border-radius:4px;color:#fff}
+    .time-badge.open{background:#27ae60}
+    .time-badge.closed{background:#c0392b}
+    .time-badge.opening-soon{background:#f1c40f;color:#000}
+    .time-badge.closing-soon{background:#e67e22}
+    .time-badge .next-text{font-weight:600}
+    /* Header topbar color states (override previous topbar colors) */
+    .header-topbar.open { background-color: #27ae60 !important; background-image: none !important; color: #fff !important; }
+    .header-topbar.closed { background-color: #c0392b !important; background-image: none !important; color: #fff !important; }
+    .header-topbar.opening-soon { background-color: #f1c40f !important; background-image: none !important; color: #000 !important; }
+    .header-topbar.closing-soon { background-color: #e67e22 !important; background-image: none !important; color: #fff !important; }
+    .header-topbar, .header-area .header-topbar { background-repeat: no-repeat !important; }
+    .header-topbar .container { background: transparent !important; }
+    .header-topbar * { color: inherit !important; }
+    .header-topbar .time-badge{background:transparent;border-radius:0;padding:6px 0}
+    </style>
+
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -475,7 +494,8 @@
                 const minutes = h*60 + m;
                 const openRange = isWeekend ? weekendOpen : weekdayOpen;
                 const openNow = minutes >= openRange.open && minutes < openRange.close;
-                return {openNow,minutes,openRange,day,n};
+                const closingSoon = minutes >= 19*60 && minutes < openRange.close;
+                return {openNow,minutes,openRange,day,n,closingSoon};
             }
             function nextOpeningInfo(){
                 const s = getStatus();
@@ -505,11 +525,34 @@
                 const s = getStatus();
                 const statusText = el.querySelector('.status-text');
                 const nextText = el.querySelector('.next-text');
+                const topbar = document.querySelector('.header-topbar');
+                el.classList.remove('open','closed','opening-soon','closing-soon');
+                if(topbar) topbar.classList.remove('open','closed','opening-soon','closing-soon');
+                // reset inline styles
+                if(topbar){ topbar.style.backgroundColor = ''; topbar.style.backgroundImage = ''; topbar.style.color = ''; }
+
                 if(s.openNow){
-                    statusText.textContent = 'Open • Closes at ' + (function(){ const c = s.openRange.close; return Math.floor(c/60)+':'+pad(c%60); })();
-                    if(nextText) nextText.textContent = '';
-                    el.classList.add('open');
-                    el.classList.remove('closed');
+                    if(s.closingSoon){
+                        statusText.textContent = 'Open • Closing soon';
+                        el.classList.add('closing-soon');
+                        if(topbar){
+                            topbar.classList.add('closing-soon');
+                            topbar.style.backgroundColor = '#e67e22';
+                            topbar.style.backgroundImage = 'none';
+                            topbar.style.color = '#ffffff';
+                        }
+                        nextText.textContent = 'Closes at ' + (function(){ const c = s.openRange.close; return Math.floor(c/60)+':'+pad(c%60); })();
+                    } else {
+                        statusText.textContent = 'Open • Closes at ' + (function(){ const c = s.openRange.close; return Math.floor(c/60)+':'+pad(c%60); })();
+                        nextText.textContent = '';
+                        el.classList.add('open');
+                        if(topbar){
+                            topbar.classList.add('open');
+                            topbar.style.backgroundColor = '#27ae60';
+                            topbar.style.backgroundImage = 'none';
+                            topbar.style.color = '#ffffff';
+                        }
+                    }
                 } else {
                     statusText.textContent = 'Closed';
                     const next = nextOpeningInfo();
@@ -517,12 +560,15 @@
                         const diffMs = next.opensAt.getTime() - s.n.getTime();
                         const hours = diffMs/3600000;
                         nextText.textContent = 'Opens in ' + humanDiff(diffMs) + ' (at ' + (function(){ const d=next.opensAt; return d.getUTCHours()+':'+pad(d.getUTCMinutes()); })() + ' Nairobi)';
-                        if(hours <= checkHours) el.classList.add('opening-soon'); else el.classList.remove('opening-soon');
+                        if(hours <= checkHours){
+                            el.classList.add('opening-soon');
+                            if(topbar){ topbar.classList.add('opening-soon'); topbar.style.backgroundColor = '#f1c40f'; topbar.style.backgroundImage = 'none'; topbar.style.color = '#000'; }
+                        }
                     } else {
                         nextText.textContent = 'Opening schedule unavailable';
                     }
                     el.classList.add('closed');
-                    el.classList.remove('open');
+                    if(topbar){ topbar.classList.add('closed'); topbar.style.backgroundColor = '#c0392b'; topbar.style.backgroundImage = 'none'; topbar.style.color = '#ffffff'; }
                 }
             }
             render();
