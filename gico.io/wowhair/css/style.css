@@ -390,9 +390,14 @@ a {
   color: #D6A354;
   margin-right: 5px;
 }
+.topbar-info ul {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
 .topbar-info ul li:last-child {
-  float: right;
-  margin-right: 0;
+  margin-left: auto;
+  float: none;
 }
 .topbar-info ul li a {
   background-color: #D6A354;
@@ -403,13 +408,21 @@ a {
 
 /* Timing badge: match WhatsApp button background and padding */
 .topbar-info ul li.time-badge {
-  /* badge color is controlled by .time-badge.open|.closed etc. Keep base transparent so JS-controlled classes set color */
-  background: transparent;
-  color: inherit;
+  /* Button-like badge that is colored via .time-badge.open/.closed/.opening-soon/.closing-soon */
+  display: inline-block;
   padding: 10px 20px;
   border-radius: 8px;
-  display: inline-block;
+  font-weight: 600;
+  box-shadow: none;
+  transition: all 180ms ease-in-out;
+  color: #fff; /* JS will set text color to white for readability */
+  background: transparent;
 }
+/* State colors (defaults; JS will apply exact colors) */
+.time-badge.open { background: #5cb85c; color: #ffffff; }
+.time-badge.closed { background: #d9534f; color: #ffffff; }
+.time-badge.opening-soon, .time-badge.closing-soon { background: #f0ad4e; color: #ffffff; }
+.time-badge i { margin-right: 8px; }
 .topbar-info ul li.time-badge i {
   color: #ffffff;
   margin-right: 8px;
@@ -429,6 +442,68 @@ a {
 .header-two-area .stellarnav>ul>li>a {
   color: #444444 !important;
 }
+
+/* Brand banner - black & gold premium look */
+.brand-banner {
+  background: #000000;
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(214,163,84,0.08);
+}
+.brand-banner-inner {
+  display: inline-block;
+  padding: 10px 28px;
+  font-family: 'Oswald', sans-serif;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: transparent; /* fill via gradient */
+  font-size: 24px;
+  letter-spacing: 2px;
+  border: 2px solid rgba(214,163,84,0.18);
+  border-radius: 8px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.45);
+  position: relative;
+  /* Metallic gradient text */
+  background-image: linear-gradient(120deg, #fff9e6 0%, #f6dfb8 18%, #D6A354 40%, #b8862f 65%, #fff7d8 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 1px 0 rgba(255,255,255,0.02), 0 6px 18px rgba(0,0,0,0.6);
+}
+
+/* Subtle sheen for metallic effect */
+.brand-banner-inner::after {
+  content: "";
+  position: absolute;
+  left: -10%;
+  top: -30%;
+  width: 120%;
+  height: 160%;
+  background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.35) 50%, rgba(255,255,255,0) 100%);
+  transform: rotate(-18deg);
+  opacity: 0.18;
+  pointer-events: none;
+  mix-blend-mode: overlay;
+}
+
+/* Top full-width banner (very top) */
+.top-full-banner {
+  width: 100%;
+  background: #000000;
+  border-bottom: 2px solid #D4AF37; /* gold bottom border */
+}
+.top-full-banner .top-full-inner {
+  color: #D4AF37;
+  font-weight: 700;
+  font-size: 1.5rem;
+  letter-spacing: 2px;
+  padding: 6px 0;
+}
+
+/* SVG banner tweaks */
+.top-full-banner svg { display: block; width: 100%; height: 72px; }
+.top-full-banner .svg-inner { max-width: 1400px; margin: 0 auto; }
+.top-full-banner text { font-family: 'Oswald', sans-serif; font-weight: 800; letter-spacing: 2px; }
+@media (max-width: 768px) { .top-full-banner svg { height: 56px; } .top-full-banner text { font-size: 22px; } }
 
 /* NavBar Fixed CSS */
 .fixed-header {
