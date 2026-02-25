@@ -391,9 +391,10 @@ a {
   margin-right: 5px;
 }
 .topbar-info ul {
-  display: flex;
-  align-items: center;
-  gap: 12px;
+  display: flex; /* Use flexbox for layout */
+  align-items: center; /* Align items vertically */
+  justify-content: space-between; /* Distribute space between items */
+  flex-wrap: wrap; /* Allow wrapping on smaller screens */
 }
 .topbar-info ul li:last-child {
   margin-left: auto;
@@ -2135,4 +2136,16 @@ a {
 }
 .copyright p {
   color: #a5a5a5;
+}
+
+@media (max-width: 768px) {
+  .topbar-info ul li a {
+    padding: 8px 15px; /* Reduce padding for smaller screens */
+    font-size: 14px; /* Adjust font size for better fit */
+  }
+
+  .topbar-info ul li.time-badge {
+    padding: 8px 15px; /* Reduce padding for smaller screens */
+    font-size: 14px; /* Adjust font size for better fit */
+  }
 }
