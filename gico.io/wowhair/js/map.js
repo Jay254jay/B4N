@@ -10,11 +10,11 @@ function initMap() {
   var marker = new google.maps.Marker({
     position: centerLatLng,
     map: map,
-    title: 'Barber 4 All - NEJMA COURT, 12 RHAPTA ROAD. WESTLANDS'
+    title: 'Barber 4 All - NJEMA COURT, 12 RHAPTA ROAD. WESTLANDS'
   });
 
   var infoWindow = new google.maps.InfoWindow({
-    content: '<strong>Barber 4 All</strong><br>NEJMA COURT, 12 RHAPTA ROAD. WESTLANDS'
+    content: '<strong>Barber 4 All</strong><br>NJEMA COURT, 12 RHAPTA ROAD. WESTLANDS'
   });
 
   marker.addListener('click', function() {

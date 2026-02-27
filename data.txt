@@ -31,7 +31,7 @@ WhatsApp Integration: Direct link to wa.me/254733572239 for instant bookings.
 Dynamic Price List: Easy-to-update table for services (Haircuts, Washes, Massages).
 Review Carousel: Displaying 4.7-star ratings to build trust.
 Integrations:
-Google Maps: To show the exact spot at NEJMA COURT, 12 RHAPTA ROAD. WESTLANDS
+Google Maps: To show the exact spot at NJEMA COURT, 12 RHAPTA ROAD. WESTLANDS
 Payment Info: Clearly state Cash-only or M-Pesa status to set client expectations.
 Technical Constraints: Must be fully accessible (the shop itself is wheelchair accessible) and highly responsive for mobile users.
 5. Logistics & Support
