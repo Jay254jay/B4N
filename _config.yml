@@ -1,0 +1,10 @@
+# GitHub Pages configuration
+theme: null
+markdown: kramdown
+permalink: /:categories/:title/
+exclude:
+  - .gitignore
+  - .git
+  - hts-cache
+  - hts-log.txt
+  - data.txt
